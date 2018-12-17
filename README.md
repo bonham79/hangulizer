@@ -11,7 +11,8 @@ Required:
 - jamotools package: pip install jamotools
 
 Common Issues:
-- Software assumes that provided forms are romanizations of Hangul graphemes.  As such, assumes syllable composition to be VALID PHONETIC APPROXIMATIONS OF KOREAN WORDS.  Usage of English exclusive phonemes (/f/, /v/, /z/) will likely result in runtime error.  
+- Software assumes that provided forms are romanizations of Hangul graphemes.  As such, assumes syllable composition to be VALID PHONETIC APPROXIMATIONS OF KOREAN WORDS.  Usage of English exclusive phonemes (/f/, /v/, /z/) will likely result in ERROR token in output text string.
+-Above issue also applies to mophological restrictions in Korean.  (e.g. conversion of "string").  Will result in runtime error.  (Future work intends to alleviate this issue.)   
 
 Thanks to:
 -Wiktionary for Korean Lemmas and associated romanizations.
