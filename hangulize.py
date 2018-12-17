@@ -13,6 +13,14 @@ from unicodedata import *
 import P2G_Hangul_Ngram_Syl
 import P2G_Hangul_Rule
 
+invalids = {'q', 'f', 'z', 'x', 'v'}
+
+def validate(string):
+	for i in string:
+		if i in invalids:
+			return False
+	return True 
+
 def hangulize(roman, Syl=True):
 	hanguls = []
 	hanguls.append(normalize("NFKC", P2G_Hangul_Rule.hangulize(roman)))
@@ -27,7 +35,10 @@ def main(args):
 		with open(args.Target, 'w') as sink:
 			for line in source:
 				for i in line.split():
-					sink.write(hangulize(i, args.Syllable) + " ")
+					if (validate(i)):
+						sink.write(hangulize(i, args.Syllable) + " ")
+					else:
+						sink.write("ERROR")
 				sink.write("\n")
 
 
