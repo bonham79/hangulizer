@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-##80% accuracy ~11 fails
+###Performs 'hangulization' of Romanization of Korean lemmas using Syllable based n-gram Weighted FST's
+###Dependency for general hangulize function. Upon first run, builds an FST for later use.
 
 from pynini import *
 from unicodedata import *
@@ -9,12 +10,13 @@ import csv
 import jamotools
 
 #####################################################################################################################
-
-ngram = Fst.read("fars/comp.syl.lm") ##Trigram yields 1% increase ~80.  But masssively slow.  
+###Reads Weighted n-gram FST into environment, alongside table.   
+ngram = Fst.read("fars/comp.syl.lm")   
 sym = SymbolTable.read_text("ngrams/comp.syl.sym")
 
 ####################################################################################################################
-###Made a function so it wouldn't need to be read every time
+###Function to create base FST.  Only runs upon first use and if file has been deleted.
+####FST creates mapping between Romanized forms of syllable possibles in Korean and their Hangul equivalent characters
 def make_fst():
     ##Dictionaries of jamo and possible sounds they may take on. Onsets, rhymes and codas with associated romanizations above.    
     hangul_vowels = ['ㅏ' , 'ㅐ' ,'ㅑ' ,'ㅒ' ,'ㅓ' ,'ㅔ' ,'ㅕ' ,'ㅖ' ,'ㅗ' ,'ㅘ' ,'ㅙ' ,'ㅚ' ,'ㅛ' ,'ㅜ' ,'ㅝ' ,'ㅞ' ,'ㅟ' ,'ㅠ' ,'ㅡ' ,'ㅢ' ,'ㅣ']
@@ -65,6 +67,7 @@ except:
 #####################################################################################################################
 
 def sing_hangulize(roman):
+    ##Main converter function for FST. Main function will call this.  Written as seperate for Testing utility.
     lattice = roman.lower().replace("-","") * FST * ngram
     results_FST = shortestpath(lattice).project(True).rmepsilon()
     results = [chr(int(jamo)) for jamo in results_FST.stringify(sym).split()] ###Applies to each seperate codepoint
@@ -72,8 +75,11 @@ def sing_hangulize(roman):
     return(jamotools.join_jamos(jamos))
 
 
-###This is an abomination.  Figure out your goddamn spaces
 def hangulize(romans):
+    ##Determines whether to render multiple lemmas as a list for subsequent rendering.
+    ##Needed to write due to issue with recognizing spacing in FST.
+    ##Only truly needed for Testing utility.  For general function, delegates to above function.
+    ##Trade off time is minimal due to single handling check so left in function.  
     if " " in romans:
         return(" ".join([sing_hangulize(romam) for romam in romans.split()]))
     else:

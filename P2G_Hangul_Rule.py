@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-###To try out:  Take final rule based P2G and place syl (or char) ngram on top.
-###Since we've already resolved everything into Hangul, all that's necessary is to 
-###Make an intermediary fst to convert hangul back to code points
-###Then can be fitted onto ngram
-####COMBINED WITH SYLnGRAM: 91%  eRROR RATE 11
-###Character Model makes no significant change
+###Rule-base FST dependency for hangulize function.  Upon first run creates FST that maps between Roman Characters and Hangul
+###equivalents and then saves seperately for later use.  
 from pynini import *
 from unicodedata import *
 import csv
@@ -15,7 +11,8 @@ import jamotools
 CODED = "NFKD"
 
 #####################################################################################################################
-###Creates our FST.  We didn't want to run it every time so decided to make it a simple function
+###Creates our FST based on mapping Roman character clusters to Hangul equivalents working from largest clusters (3 Roman characters for one jamo) 
+###to single character mappings. Intended to only run once on first run.   
 def make_fst():
 	###Assigns all Korean Chars a roman equivalent.  CODED implies they were normalized.  
 	##S used for empty char due to conflation with /ng/ character.  N for /ng/ character.  
@@ -28,8 +25,6 @@ def make_fst():
 	closure = union(hangul, roman).closure().optimize()
 
 	##FSTs
-
-
 	###For Variants that may arise for rules
 	hangul_vowels = ['ㅏ' , 'ㅐ' ,'ㅑ' ,'ㅒ' ,'ㅓ' ,'ㅔ' ,'ㅕ' ,'ㅖ' ,'ㅗ' ,'ㅘ' ,'ㅙ' ,'ㅚ' ,'ㅛ' ,'ㅜ' ,'ㅝ' ,'ㅞ' ,'ㅟ' ,'ㅠ' ,'ㅡ' ,'ㅢ' ,'ㅣ']
 	hangul_vowels_CODED = string_map([[normalize(CODED, _)] for _ in hangul_vowels])
@@ -64,7 +59,7 @@ def make_fst():
 	roman_hangul_FST_sing = cdrewrite(string_map(roman_hangul_sing), "", "", closure).optimize()
 
 	####Base P2G
-	hangul_roman= (roman_hangul_FST_tri * roman_hangul_FST_doub * roman_hangul_FST_sing)
+	hangul_roman = (roman_hangul_FST_tri * roman_hangul_FST_doub * roman_hangul_FST_sing).optimize()
 
 	#####################################################################################################################
 
@@ -73,6 +68,7 @@ def make_fst():
 	###First is integrating a space marker "S" to designate the use of the 'o' jamo when no onset to rhyme. Our function assigns a space
 	###to the beginning of words to disambiguate this occurence.  We then remove the space.   
 	initial_spacing_FST = cdrewrite(transducer("", "S"), " ", hangul_vowels_CODED, closure)  * cdrewrite(transducer(" ", ""), "", "", closure) 
+
 	###Now inserts the 'o' whenever vowels are adjacent or next to the coda /ng/.  Due to korean syllable constraints, this is a 
 	###comfortable assumption for where an onset should occur.  
 	spacing_FST = initial_spacing_FST * cdrewrite(transducer("", "S"), hangul_vowels_CODED | 'N', hangul_vowels_CODED, closure).optimize()
@@ -103,6 +99,7 @@ def make_fst():
 	#####################################################################################################################
 	###Final Product
 	hangul_roman_FST =  phonemic_rule_rev * hangul_roman * hyphen_reduction * spacing_FST * char_return
+	hangul_roman_FST.optimize()
 
 	hangul_roman_FST.write("fars/P2G_Hangul_Rule.fst")
 #####################################################################################################################
