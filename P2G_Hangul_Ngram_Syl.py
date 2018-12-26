@@ -57,6 +57,7 @@ def make_fst():
     syllable_fst = string_map(mapping).closure().optimize()
 
     syllable_fst.write("fars/P2G_Hangul_Ngram_Syl.fst")
+    return syllable_fst
 #####################################################################################################################
 ###Initializes FST if it was lost.
 try:

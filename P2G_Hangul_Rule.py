@@ -102,6 +102,7 @@ def make_fst():
 	hangul_roman_FST.optimize()
 
 	hangul_roman_FST.write("fars/P2G_Hangul_Rule.fst")
+	return hangul_roman_FST
 #####################################################################################################################
 
 ###Initializes Fst for the Hangulize function
