@@ -17,6 +17,9 @@ Common Issues:
 
 Thanks to:
 -Pynini
+      K. Gorman. 2016. [Pynini: A Python library for weighted finite-state grammar compilation]
+      (http://openfst.cs.nyu.edu/twik/pub/GRM/Pynini/pynini-paper.pdf).  
+      In *Proc. ACL Workshop on Statistical NLP and Weighted Automata*, 75-80.
 -Jamotools
 -Wiktionary for Korean Lemmas and associated romanizations.
 -Universal Dependencies Treebank for Training Data.
