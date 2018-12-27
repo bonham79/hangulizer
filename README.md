@@ -7,7 +7,8 @@ To use:
   Note: --Syllable flag increases range of outputs and increases accuracy at possible cost to run-time performance.
 
 Required: 
-- pynini package and associated dependencies (please see requirements at http://www.openfst.org/twiki/bin/view/GRM/Pynini
+- python 3.6.5 or later.  
+- pynini package and associated dependencies (please see requirements at http://www.openfst.org/twiki/bin/view/GRM/Pynini)
 - jamotools package: pip install jamotools
 
 Common Issues:
