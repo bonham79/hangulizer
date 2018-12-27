@@ -16,6 +16,7 @@ Common Issues:
 -Above issue also applies to mophological restrictions in Korean.  (e.g. conversion of "string").  Will result in runtime error.  (Future work intends to alleviate this issue.)   
 
 Thanks to:
+
 -Pynini
       K. Gorman. 2016. [Pynini: A Python library for weighted finite-state grammar compilation]
       (http://openfst.cs.nyu.edu/twik/pub/GRM/Pynini/pynini-paper.pdf).  
