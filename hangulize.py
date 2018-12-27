@@ -33,8 +33,8 @@ def hangulize(roman, Syl=True):
 	return "/".join(hanguls)
 
 def main(args):
-	with open(args.Romanization) as source:
-		with open(args.Target, 'w') as sink:
+	with open(args.Romanization, encoding='utf-8') as source:
+		with open(args.Target, 'w', encoding='utf-8') as sink:
 			for line in source:
 				for i in line.split():
 					if (validate(i)):
