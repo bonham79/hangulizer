@@ -17,7 +17,7 @@ Common Issues:
 
 Thanks to:
 
--Pynini
+-Pynini:
       K. Gorman. 2016. [Pynini: A Python library for weighted finite-state grammar compilation]
       (http://openfst.cs.nyu.edu/twik/pub/GRM/Pynini/pynini-paper.pdf).  
       In *Proc. ACL Workshop on Statistical NLP and Weighted Automata*, 75-80.
