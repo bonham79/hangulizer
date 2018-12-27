@@ -20,4 +20,9 @@ Thanks to:
 -Jamotools
 -Wiktionary for Korean Lemmas and associated romanizations.
 -Universal Dependencies Treebank for Training Data.
--OpenFst group. 
+-OpenFst group:
+        Cyril Allauzen, Michael Riley, Johan Schalkwyk, Wojciech Skut and Mehryar Mohri, 
+        "OpenFst: A General and Efficient Weighted Finite-State Transducer Library", 
+        Proceedings of the Ninth International Conference on Implementation and 
+        Application of Automata, (CIAA 2007), volume 4783 of Lecture Notes in 
+        Computer Science, pages 11-23. Springer, 2007. http://www.openfst.org.
